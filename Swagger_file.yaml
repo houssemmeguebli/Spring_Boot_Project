@@ -1,0 +1,176 @@
+openapi: 3.0.3
+info:
+  title: Formulaire API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000
+paths:
+  /formulaire:
+    post:
+      summary: Traiter un formulaire
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Formulaire'
+      responses:
+        '200':
+          description: Formulaire traité avec succès
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: Formulaire traité avec succès 
+        '400':
+          description: Requête invalide (champ manquant)
+          content:
+            text/plain:
+              schema:
+                type: string
+
+  /affichage:
+    get:
+      summary: Obtenir tous les formulaires
+      responses:
+        '200':
+          description: Liste de tous les formulaires
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Formulaire'
+        '404':
+          description: Aucun formulaire trouvé
+          content:
+           text/plain:
+              schema:
+                type: string
+              example: Aucun formulaire trouvé
+  /supprimer:
+    delete:
+      summary: Supprimer tous les formulaires
+      responses:
+        '200':
+          description: Suppression terminée
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: Suppression terminée
+        '404':
+          description: Aucun formulaire trouvé pour la suppression
+          content:
+           text/plain:
+              schema:
+                type: string
+              example: Aucun formulaire trouvé pour la suppression
+  /formulaire/{id}:
+    get:
+      summary: Afficher le formulaire par ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID du formulaire à afficher
+      responses:
+        '200':
+          description: Formulaire trouvé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Formulaire'
+              example:
+                nom: HOUSSEM
+                prenom: MEGUEBLI
+                message: Bonjour!
+                option: Option A
+                choix_multiple: [Choix 1, Choix 2]
+        '404':
+          description: Formulaire non trouvé
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: Aucun formulaire avec cette ID
+  /supprimer/{id}:
+    delete:
+      summary: Supprimer le formulaire par ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID du formulaire à supprimer
+      responses:
+        '200':
+          description: Formulaire supprimé avec succès
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: Formulaire supprimé avec succès
+        '404':
+          description: Formulaire non trouvé
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: Formulaire non trouvé
+  /modifier/{id}:
+    put:
+      summary: Modifier le formulaire par ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID du formulaire à modifier
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Formulaire'
+      responses:
+        '200':
+          description: Formulaire modifié avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Formulaire'
+              example:
+                nom: HOUSSEM
+                prenom: MEGUEBLI
+                message: Bonjour!
+                option: Option B
+                choix_multiple: [Choix 1, Choix 3]
+        '404':
+          description: Formulaire non trouvé
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Formulaire non trouvé
+components:
+  schemas:
+    Formulaire:
+      type: object
+      properties:
+        nom:
+          type: string
+        prenom:
+          type: string
+        message:
+          type: string
+        option:
+          type: string
+        choix_multiple:
+          type: array
+          items:
+            type: string
